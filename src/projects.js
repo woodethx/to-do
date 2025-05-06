@@ -10,11 +10,12 @@ export default class Project{
         this.toDos = [];
         projects.push(this);
         bus.publish("project:added", projects);
+        bus.publish("new:project", this);
     }
     addToDo(title, desc){
         const toDo = new ToDo(title,desc);
         this.toDos.push(toDo);
-        bus.publish("todo:created", toDo);
+        bus.publish("todo:added", this);
     }
     removeToDo(toDoID){
         const toDo = this.toDos.find(toDo => toDo.id === toDoID);
@@ -24,3 +25,10 @@ export default class Project{
         bus.publish("todo:removed", toDo);
     }
 }
+bus.subscribe("addProj", ({ name, desc = "" }) => {
+    const proj = new Project(name, desc); 
+});
+bus.subscribe("addToDo", ({projID, name, desc }) => {
+    const proj = projects.find(project => project.id === projID);
+    proj.addToDo(name,desc);   
+});

@@ -46,6 +46,7 @@ main{
     background-color: white;
     padding: 20px;
     border-radius: 10px;
+    margin-right: 2vw;
 }
 .toDoItem >h3,
 .toDoItem >p{
@@ -55,7 +56,15 @@ main{
     grid-area: 1 / 1 / 3 / 2;
     border-radius: 10vw;
     background-color: white;
-    font-size: 1.5rem;
+    font-size: 2rem;
+}
+.addToDo{
+    grid-area: 1 / 1 / 3 / 2;
+    background-color: rgb(0, 0, 87);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: 700;
 }
 
 #projCon > button.selectedProject{
@@ -74,4 +83,32 @@ main{
 .completedToDo > h3,
 .completedToDo > p{
     text-decoration: line-through;
+}
+.addProj{
+    display: flex;
+    gap: 5px;
+}
+.addProj > input{
+    background-color: aliceblue;
+    border: none;
+    border-radius: 5px;
+}
+.addProj > button{
+    background-color: white;
+    border: none;
+    border-radius: 5px;
+}
+.invisible{
+    display: none;
+}
+
+#listCon{
+    display: flex;
+    flex-direction:column;
+    gap: 10px;
+}
+
+.toDoItem > input{
+    border: none;
+    font-size: 1.1rem;
 }
