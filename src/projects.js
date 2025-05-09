@@ -11,8 +11,8 @@ export default class Project{
         projects.push(this);
         bus.publish("project:added", projects);
     }
-    addToDo(title, desc){
-        const toDo = new ToDo(title,desc);
+    addToDo(title, desc, date, priority){
+        const toDo = new ToDo(title,desc,date, priority);
         this.toDos.push(toDo);
         bus.publish("todo:added", this);
     }
@@ -28,7 +28,7 @@ bus.subscribe("addProj", ({ name, desc = "" }) => {
     const proj = new Project(name, desc);
     bus.publish("new:project", this);
 });
-bus.subscribe("addToDo", ({projID, name, desc }) => {
+bus.subscribe("addToDo", ({projID, name, desc, date, priority }) => {
     const proj = projects.find(project => project.id === projID);
-    proj.addToDo(name,desc);   
+    proj.addToDo(name,desc, date, priority);   
 });

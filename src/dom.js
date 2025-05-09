@@ -80,7 +80,10 @@ function renderList(project){
         const toDoDesc = document.createElement("p");
         toDoDesc.classList.add("secondRow");
         toDoDesc.innerText = toDo.desc;
+        const toDoDate = document.createElement("p");
+        toDoDate.innerText = "Due Date: "+toDo.date;
         toDoDiv.append(checkbox, toDoTitle, toDoDesc);
+        if(toDo.date !== undefined) toDoDiv.append(toDoDate);
         listCon.appendChild(toDoDiv);
         makeEditable(toDoTitle, newTxt => {
             toDo.title = newTxt;
@@ -90,6 +93,10 @@ function renderList(project){
             toDo.desc = newTxt;
             renderList(project);
         });
+        makeEditable(toDoDate, newDate => {
+            toDo.date = newDate;
+            renderList(project);
+        },"date");
     });
     const toDoAdd = document.createElement("div")
     toDoAdd.classList.add("toDoItem");
@@ -98,6 +105,10 @@ function renderList(project){
     toDoPlus.classList.add("addToDo");
     const addTitle = document.createElement("input");
     const addDesc = document.createElement("input");
+    const addDate = document.createElement("input");
+    const addPrio = document.createElement("input");
+    addDate.type = "date";
+    addPrio.type = "select";
     addTitle.placeholder = "Enter Title";
     addDesc.placeholder = "Enter Description";
     addDesc.classList.add("secondRow");
@@ -106,15 +117,18 @@ function renderList(project){
             const projID = currentProjectBtn.dataset.id;
             const toDoTitle = addTitle.value.trim();
             const toDoDesc = addDesc.value.trim();
+            const doDate = addDate.value;
             bus.publish("addToDo", {           
-            projID,  
+            projID,
             name: toDoTitle,         
-            desc: toDoDesc 
+            desc: toDoDesc,
+            date: doDate
         });
         }
     };
     addTitle.addEventListener("keydown", addToDoDiv);
     addDesc.addEventListener("keydown", addToDoDiv);
-    toDoAdd.append(toDoPlus,addTitle,addDesc);
+    addDate.addEventListener("keydown", addToDoDiv);
+    toDoAdd.append(toDoPlus,addTitle,addDesc,addDate, addPrio);
     listCon.append(toDoAdd);
 }

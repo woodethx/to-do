@@ -41,7 +41,7 @@ main{
 }
 .toDoItem{
     display: grid;
-    grid-template-columns: 1fr 23fr 2fr;
+    grid-template-columns: 1fr 20fr 5fr;
     grid-template-rows: 2vh 2vh;
     gap: 1vw;
     background-color: white;

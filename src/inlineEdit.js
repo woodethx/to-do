@@ -1,13 +1,13 @@
-export function makeEditable(el, commit, opt = {}) {
-    const { inputType = "text", inputClass = "editInline" } = opt;
+export function makeEditable(el, commit, iType) {
     el.addEventListener("click",   start);
     el.addEventListener("keydown", e=>{
       if (e.key === "Enter" || e.key === " ") start();
     });
-  
+
     function start() {
       const input = document.createElement("input");
-      input.className = inputClass;
+      input.type = iType;
+      input.className = "editInline";
       input.value = el.textContent;
       el.replaceWith(input);
       el.classList.forEach(cls => {
