@@ -1,3 +1,4 @@
+import { makeEditable } from "./inlineEdit";
 import bus from "./pubsub";
 
 export default function init(){
@@ -54,7 +55,7 @@ function renderProjects(projects){
         projInput.focus();
     });
     projCon.appendChild(addDiv);
-}
+};
 function renderList(project){
     const toDoHead = document.getElementById("toDoHead");
     toDoHead.innerText = project.name+" Tasks:"
@@ -81,6 +82,14 @@ function renderList(project){
         toDoDesc.innerText = toDo.desc;
         toDoDiv.append(checkbox, toDoTitle, toDoDesc);
         listCon.appendChild(toDoDiv);
+        makeEditable(toDoTitle, newTxt => {
+            toDo.title = newTxt;
+            renderList(project);
+        });
+        makeEditable(toDoDesc, newTxt => {
+            toDo.desc = newTxt;
+            renderList(project);
+        });
     });
     const toDoAdd = document.createElement("div")
     toDoAdd.classList.add("toDoItem");
@@ -103,7 +112,7 @@ function renderList(project){
             desc: toDoDesc 
         });
         }
-    }
+    };
     addTitle.addEventListener("keydown", addToDoDiv);
     addDesc.addEventListener("keydown", addToDoDiv);
     toDoAdd.append(toDoPlus,addTitle,addDesc);
