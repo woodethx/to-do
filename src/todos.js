@@ -5,7 +5,6 @@ export default class ToDo{
         this.title = title;
         this.desc = desc;
         this.completed = false;
-        this.createDate = Date.now();
         this.id = crypto.randomUUID();
     }
     

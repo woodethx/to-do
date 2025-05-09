@@ -15,7 +15,8 @@ body{
     width: 20%;
     padding-left: 2vw;
 }
-#projCon > button{
+#projCon > button,
+.addProj > input:focus{
     background-color: rgb(0, 0, 87);
     color: white;
     border: none;
@@ -40,17 +41,22 @@ main{
 }
 .toDoItem{
     display: grid;
-    grid-template-columns: 1fr 25fr;
+    grid-template-columns: 1fr 23fr 2fr;
     grid-template-rows: 2vh 2vh;
     gap: 1vw;
     background-color: white;
     padding: 20px;
     border-radius: 10px;
     margin-right: 2vw;
+    border-left: 6px solid rgb(0, 0, 131);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 .toDoItem >h3,
 .toDoItem >p{
     margin: 0;
+}
+.secondRow{
+    grid-area: 2 / 2 / 3 / 3;
 }
 .checkbox{
     grid-area: 1 / 1 / 3 / 2;
@@ -60,11 +66,10 @@ main{
 }
 .addToDo{
     grid-area: 1 / 1 / 3 / 2;
-    background-color: rgb(0, 0, 87);
-    border: none;
-    border-radius: 5px;
-    color: white;
+    color: black;
+    font-size: 3rem;
     font-weight: 700;
+    text-align: center;
 }
 
 #projCon > button.selectedProject{
@@ -90,11 +95,6 @@ main{
 }
 .addProj > input{
     background-color: aliceblue;
-    border: none;
-    border-radius: 5px;
-}
-.addProj > button{
-    background-color: white;
     border: none;
     border-radius: 5px;
 }

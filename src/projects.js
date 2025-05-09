@@ -10,7 +10,6 @@ export default class Project{
         this.toDos = [];
         projects.push(this);
         bus.publish("project:added", projects);
-        bus.publish("new:project", this);
     }
     addToDo(title, desc){
         const toDo = new ToDo(title,desc);
@@ -26,7 +25,8 @@ export default class Project{
     }
 }
 bus.subscribe("addProj", ({ name, desc = "" }) => {
-    const proj = new Project(name, desc); 
+    const proj = new Project(name, desc);
+    bus.publish("new:project", this);
 });
 bus.subscribe("addToDo", ({projID, name, desc }) => {
     const proj = projects.find(project => project.id === projID);
