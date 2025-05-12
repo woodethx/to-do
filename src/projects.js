@@ -9,19 +9,19 @@ export default class Project{
         this.id = crypto.randomUUID();
         this.toDos = [];
         projects.push(this);
-        bus.publish("project:added", projects);
+        bus.publish("project:updated", projects);
     }
     addToDo(title, desc, date, priority){
         const toDo = new ToDo(title,desc,date, priority);
         this.toDos.push(toDo);
-        bus.publish("todo:added", this);
+        bus.publish("todo:updated", this);
     }
     removeToDo(toDoID){
         const toDo = this.toDos.find(toDo => toDo.id === toDoID);
         if(!toDo) return;
         const index = this.toDos.indexOf(toDo);
         this.toDos.splice(index, 1);
-        bus.publish("todo:removed", toDo);
+        bus.publish("todo:updated", this);
     }
 }
 bus.subscribe("addProj", ({ name, desc = "" }) => {
@@ -31,4 +31,15 @@ bus.subscribe("addProj", ({ name, desc = "" }) => {
 bus.subscribe("addToDo", ({projID, name, desc, date, priority }) => {
     const proj = projects.find(project => project.id === projID);
     proj.addToDo(name,desc, date, priority);   
+});
+bus.subscribe("removeToDo", ({projID, toDoID}) => {
+    const proj = projects.find(project => project.id === projID);
+    proj.removeToDo(toDoID);
+});
+bus.subscribe("removeProj", (projID) => {
+    const proj = projects.find(project => project.id === projID);
+    if(!proj) return;
+    const index = projects.indexOf(proj);
+    projects.splice(index,1);
+    bus.publish("project:updated", projects);
 });

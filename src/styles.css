@@ -10,10 +10,20 @@ html{
 body{
     display: flex;
 }
+.trash{
+    width: 50px;
+    height: 50px;
+    grid-area: 1 / 4 / 2 / 5;
+}
 #sidebar{
     background-color: rgb(0, 0, 87);
     width: 20%;
     padding-left: 2vw;
+}
+.projDiv{
+    display: flex;
+    align-items: center;
+    gap: 2%;
 }
 #projCon > button,
 .addProj > input:focus{
@@ -36,12 +46,16 @@ main{
     width: 80%;
     padding-left: 2vw;
 }
+.littleTrash{
+    width: 25px;
+    height: 25px;
+}
 #sidebar > *{
     color: white;
 }
 .toDoItem{
     display: grid;
-    grid-template-columns: 1fr 20fr 5fr;
+    grid-template-columns: 1fr 18fr 5fr 2fr;
     grid-template-rows: 2vh 2vh;
     gap: 1vw;
     background-color: white;
@@ -56,7 +70,8 @@ main{
     margin: 0;
 }
 .secondRow{
-    grid-area: 2 / 2 / 3 / 3;
+    /* grid-area: 2 / 2 / 3 / 3; */
+    grid-row-start: 2;
 }
 .checkbox{
     grid-area: 1 / 1 / 3 / 2;

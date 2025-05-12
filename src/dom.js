@@ -1,9 +1,10 @@
 import { makeEditable } from "./inlineEdit";
 import bus from "./pubsub";
+import trashIcon from './assets/trash.svg'
 
 export default function init(){
-    bus.subscribe("project:added", renderProjects);
-    bus.subscribe("todo:added", renderList);
+    bus.subscribe("project:updated", renderProjects);
+    bus.subscribe("todo:updated", renderList);
 }
 
 let currentProjectBtn = null;
@@ -14,6 +15,14 @@ function renderProjects(projects){
     projects.forEach(project => {
         const projDiv = document.createElement("button");
         projDiv.innerText = project.name;
+        projDiv.classList.add("projDiv");
+        const removeProj = document.createElement("img");
+        removeProj.classList.add("littleTrash");
+        removeProj.src = trashIcon;
+        removeProj.addEventListener("click", () =>{
+            bus.publish("removeProj", project.id);
+        });
+        projDiv.appendChild(removeProj);
         projDiv.dataset.id = project.id;
         projCon.appendChild(projDiv);
         projDiv.addEventListener("click", () => {
@@ -56,6 +65,8 @@ function renderProjects(projects){
     });
     projCon.appendChild(addDiv);
 };
+
+
 function renderList(project){
     const toDoHead = document.getElementById("toDoHead");
     toDoHead.innerText = project.name+" Tasks:"
@@ -82,9 +93,21 @@ function renderList(project){
         toDoDesc.innerText = toDo.desc;
         const toDoDate = document.createElement("p");
         toDoDate.innerText = "Due Date: "+toDo.date;
+        const toDoPrio = document.createElement("p");
+        toDoPrio.innerText = "Priority: "+toDo.priority;
+        const removeToDo = document.createElement("img");
+        removeToDo.classList.add("trash");
+        removeToDo.src = trashIcon;
+        removeToDo.addEventListener("click", () => {
+            bus.publish("removeToDo", ({
+                projID: project.id, 
+                toDoID: toDo.id
+            }));
+        });
         toDoDiv.append(checkbox, toDoTitle, toDoDesc);
         if(toDo.date !== undefined) toDoDiv.append(toDoDate);
-        listCon.appendChild(toDoDiv);
+        toDoDiv.append(toDoPrio, removeToDo);
+        listCon.append(toDoDiv);
         makeEditable(toDoTitle, newTxt => {
             toDo.title = newTxt;
             renderList(project);
@@ -97,6 +120,10 @@ function renderList(project){
             toDo.date = newDate;
             renderList(project);
         },"date");
+        makeEditable(toDoPrio, newOp => {
+            toDo.priority = newOp;
+            renderList(project);
+        },"prio");
     });
     const toDoAdd = document.createElement("div")
     toDoAdd.classList.add("toDoItem");
@@ -106,29 +133,33 @@ function renderList(project){
     const addTitle = document.createElement("input");
     const addDesc = document.createElement("input");
     const addDate = document.createElement("input");
-    const addPrio = document.createElement("input");
+    const addPrio = document.createElement("select");
     addDate.type = "date";
-    addPrio.type = "select";
+    addPrio.classList.add("secondRow")
+    const priorities = ["Low", "Medium", "High"];
+    priorities.forEach(priority => {
+        const el = document.createElement("option");
+        el.textContent = priority;
+        addPrio.appendChild(el);
+    });
     addTitle.placeholder = "Enter Title";
     addDesc.placeholder = "Enter Description";
     addDesc.classList.add("secondRow");
     const addToDoDiv = (e) => {
         if(e.key === "Enter"){
-            const projID = currentProjectBtn.dataset.id;
-            const toDoTitle = addTitle.value.trim();
-            const toDoDesc = addDesc.value.trim();
-            const doDate = addDate.value;
             bus.publish("addToDo", {           
-            projID,
-            name: toDoTitle,         
-            desc: toDoDesc,
-            date: doDate
+            projID: project.id,
+            name: addTitle.value.trim(),         
+            desc: addDesc.value.trim(),
+            date: addDate.value,
+            priority: addPrio.value
         });
         }
     };
     addTitle.addEventListener("keydown", addToDoDiv);
     addDesc.addEventListener("keydown", addToDoDiv);
     addDate.addEventListener("keydown", addToDoDiv);
+    addPrio.addEventListener("keydown", addToDoDiv);
     toDoAdd.append(toDoPlus,addTitle,addDesc,addDate, addPrio);
     listCon.append(toDoAdd);
 }
