@@ -93,6 +93,12 @@ main{
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
 }
+.projDiv > img{
+    filter: invert(100%) sepia(5%) saturate(158%) hue-rotate(178deg) brightness(117%) contrast(100%);
+}
+.selectedProject > img{
+    filter: invert(0%) sepia(100%) saturate(27%) hue-rotate(253deg) brightness(89%) contrast(102%); 
+}
 
 .completedToDo{
     background-color: rgb(201, 201, 201);
@@ -132,4 +138,6 @@ input:focus{
     border: none;
 }
 
-.editInline { font: inherit; width: 100%; border: 1px solid #ccc; }
+.editInline{
+    font: inherit; width: 100%; border: 1px solid #ccc; 
+}
