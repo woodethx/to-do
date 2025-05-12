@@ -23,7 +23,7 @@ body{
 .projDiv{
     display: flex;
     align-items: center;
-    gap: 2%;
+    padding-right: 10%;
 }
 #projCon > button,
 .addProj > input:focus{
@@ -49,6 +49,7 @@ main{
 .littleTrash{
     width: 25px;
     height: 25px;
+    margin-left: auto;
 }
 #sidebar > *{
     color: white;
@@ -70,7 +71,6 @@ main{
     margin: 0;
 }
 .secondRow{
-    /* grid-area: 2 / 2 / 3 / 3; */
     grid-row-start: 2;
 }
 .checkbox{
