@@ -1,6 +1,7 @@
 import { makeEditable } from "./inlineEdit";
 import bus from "./pubsub";
-import trashIcon from './assets/trash.svg'
+import trashIcon from './assets/trash.svg';
+import {format} from "date-fns";
 
 export default function init(){
     bus.subscribe("project:updated", renderProjects);
@@ -92,7 +93,7 @@ function renderList(project){
         toDoDesc.classList.add("secondRow");
         toDoDesc.innerText = toDo.desc;
         const toDoDate = document.createElement("p");
-        toDoDate.innerText = "Due Date: "+toDo.date;
+        toDoDate.innerText = "Due Date: "+format(toDo.date, "MM/dd/yyyy");
         const toDoPrio = document.createElement("p");
         toDoPrio.innerText = "Priority: "+toDo.priority;
         const removeToDo = document.createElement("img");
@@ -117,7 +118,9 @@ function renderList(project){
             renderList(project);
         });
         makeEditable(toDoDate, newDate => {
-            toDo.date = newDate;
+            const fixedDate = new Date(newDate);
+            fixedDate.setDate(fixedDate.getDate()+1);
+            toDo.date = fixedDate;
             renderList(project);
         },"date");
         makeEditable(toDoPrio, newOp => {

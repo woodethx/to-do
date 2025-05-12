@@ -27,6 +27,12 @@ export default class Project{
 bus.subscribe("addProj", ({ name, desc = "" }) => {
     const proj = new Project(name, desc);
     bus.publish("new:project", this);
+    const test = JSON.stringify(projects);
+    console.log("Original: "+projects)
+    console.log("Stringify: "+test);
+    const test2=JSON.parse(test);
+    console.log("Parse: "+test2[1]);
+
 });
 bus.subscribe("addToDo", ({projID, name, desc, date, priority }) => {
     const proj = projects.find(project => project.id === projID);

@@ -5,4 +5,4 @@ import initDOM from "./dom";
 
 initDOM();
 const proj = new Project("Default Project", "This is a default project");
-proj.addToDo("Default ToDo", "This is a default ToDo", "5/9/2025", "High");
+proj.addToDo("Here's a To-Do", "Click any To-Do fields to edit them", Date(Date.now), "High");
